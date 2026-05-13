@@ -1,0 +1,6 @@
+ID,incident_ID,text,author,postedAt,isPrivate
+c1000000-0000-0000-0000-000000000001,3b23bb4b-4ac7-4a24-ac02-aa10cabd842c,Inverter was checked on site,alice@example.com,2024-01-15T10:00:00Z,false
+c1000000-0000-0000-0000-000000000002,3b23bb4b-4ac7-4a24-ac02-aa10cabd842c,Replacement part ordered,bob@example.com,2024-01-16T09:00:00Z,false
+c1000000-0000-0000-0000-000000000003,3a4ede72-244a-4f5f-8efa-b17e032d01ee,Customer called - no update yet,alice@example.com,2024-01-17T14:00:00Z,false
+c1000000-0000-0000-0000-000000000004,3a4ede72-244a-4f5f-8efa-b17e032d01ee,Internal: low priority queue,admin@example.com,2024-01-18T08:00:00Z,true
+c1000000-0000-0000-0000-000000000005,3583f982-d7df-4aad-ab26-301d4a157cd7,Panel physically damaged,bob@example.com,2024-01-19T11:00:00Z,false

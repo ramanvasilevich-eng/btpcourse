@@ -1,0 +1,30 @@
+<mvc:View controllerName="incidentoverview.controller.ListReport"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m">
+    <Page id="page" title="{i18n>title}">
+        <content>
+            <Table id="incidentsTable"
+                   items="{path: '/ListOfIncidents'}">
+                <headerToolbar>
+                    <Toolbar id="incidentsToolbar">
+                        <Title id="incidentsTitle" text="Incidents"/>
+                    </Toolbar>
+                </headerToolbar>
+                <columns>
+                    <Column id="columnId"><Text id="columnIdText" text="ID"/></Column>
+                    <Column id="columnTitle"><Text id="columnTitleText" text="Title"/></Column>
+                    <Column id="columnCustomer"><Text id="columnCustomerText" text="Customer"/></Column>
+                </columns>
+                <items>
+                    <ColumnListItem id="incidentsRow">
+                        <cells>
+                            <Text id="cellId" text="{ID}"/>
+                            <Text id="cellTitle" text="{title}"/>
+                            <Text id="cellCustomer" text="{customer/name}"/>
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </content>
+    </Page>
+</mvc:View>

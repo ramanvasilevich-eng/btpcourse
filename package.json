@@ -1,23 +1,143 @@
 {
-  "name": "incident-management",
-  "version": "1.0.0",
-  "dependencies": {
-    "@sap/cds": "^9"
-  },
-  "devDependencies": {
-    "@cap-js/sqlite": "^2.4",
-    "cds-plugin-ui5": "^0.13.0"
-  },
-  "scripts": {
-    "start": "cds-serve",
-    "watch-incidents": "cds watch --open ns.incidents/index.html?sap-ui-xx-viewCache=false --livereload false",
-    "watch-incident-overview": "cds watch --open incidentoverview/index.html?sap-ui-xx-viewCache=false --livereload false"
-  },
-  "private": true,
-  "workspaces": [
-    "app/*"
-  ],
-  "sapux": [
-    "app/incidents"
-  ]
+ "name": "incident-management",
+ "version": "1.0.0",
+ "dependencies": {
+  "@cap-js/hana": "^2",
+  "@sap-cloud-sdk/connectivity": "^3.26.4",
+  "@sap-cloud-sdk/http-client": "^3.26.4",
+  "@sap-cloud-sdk/resilience": "^3.26.4",
+  "@sap-cloud-sdk/util": "^3.26.4",
+  "@sap/cds": "^9",
+  "@sap/xssec": "^4"
+ },
+ "devDependencies": {
+  "@cap-js/cds-test": "^1.0.1",
+  "@cap-js/sqlite": "^2.4",
+  "@sap/cds-dk": "^9",
+  "cds-plugin-ui5": "^0.13.0",
+  "chai": "^6.2.2",
+  "mocha": "^11.7.6"
+ },
+ "scripts": {
+  "start": "cds-serve",
+  "watch-incidents": "cds watch --open ns.incidents/index.html?sap-ui-xx-viewCache=false --livereload false",
+  "watch-incident-overview": "cds watch --open incidentoverview/index.html?sap-ui-xx-viewCache=false --livereload false",
+  "test": "mocha",
+  "test:jest": "npx jest tests/test.js"
+ },
+ "private": true,
+ "workspaces": [
+  "app/*"
+ ],
+ "sapux": [
+  "app/incidents"
+ ],
+ "cds": {
+  "requires": {
+   "[development]": {
+    "auth": {
+     "kind": "mocked",
+     "users": {
+      "alice": {
+       "roles": [
+        "support",
+        "admin"
+       ]
+      },
+      "bob": {
+       "roles": [
+        "support",
+        "admin"
+       ]
+      },
+      "admin": {
+       "roles": [
+        "support",
+        "admin"
+       ]
+      },
+      "*": {
+       "roles": [
+        "support",
+        "admin"
+       ]
+      }
+     }
+    }
+   },
+   "[hybrid]": {
+    "auth": {
+     "kind": "mocked",
+     "users": {
+      "alice": {
+       "roles": [
+        "support",
+        "admin"
+       ]
+      },
+      "bob": {
+       "roles": [
+        "support",
+        "admin"
+       ]
+      },
+      "admin": {
+       "roles": [
+        "support",
+        "admin"
+       ]
+      },
+      "*": {
+       "roles": [
+        "support",
+        "admin"
+       ]
+      }
+     }
+    }
+   },
+   "API_BUSINESS_PARTNER": {
+    "kind": "odata-v2",
+    "model": "srv/external/API_BUSINESS_PARTNER",
+    "credentials": {
+     "url": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_BUSINESS_PARTNER/"
+    },
+    "[hybrid]": {
+     "credentials": {
+      "url": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_BUSINESS_PARTNER",
+      "headers": {
+       "APIKey": "4Y3RhWEixVtY2h6zoyS8SxiRger0y1mn"
+      }
+     }
+    }
+   },
+   "Northwind": {
+    "kind": "odata-v2",
+    "credentials": {
+     "url": "https://services.odata.org/V2/Northwind/Northwind.svc"
+    }
+   },
+   "Northwind_BTP": {
+    "kind": "odata-v2",
+    "credentials": {
+     "destination": "Northwind_BTP"
+    },
+    "[development]": {
+     "credentials": {
+      "destination": "Northwind_BTP"
+     }
+    },
+    "[hybrid]": {
+     "credentials": {
+      "destination": "Northwind_BTP"
+     }
+    }
+   },
+   "[production]": {
+    "db": "hana",
+    "auth": "xsuaa",
+    "html5-repo": true
+   }
+  }
+ }
 }

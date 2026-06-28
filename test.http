@@ -1,0 +1,21 @@
+### Create Item
+POST http://localhost:4004/odata/v4/admin/createItem
+Content-Type: application/json
+
+{
+  "title": "test",
+  "descr": "test",
+  "quantity": 5
+}
+
+### Get Items by Quantity
+GET http://localhost:4004/odata/v4/admin/getItemsByQuantity(quantity=5)
+
+
+### Get Orders from Northwind
+GET http://localhost:4004/odata/v4/admin/getOrders()
+Authorization: Basic alice:
+
+### Get Orders via BTP destination (Northwind_BTP)
+GET http://localhost:4004/odata/v4/admin/getOrdersBTP()
+Authorization: Basic alice:

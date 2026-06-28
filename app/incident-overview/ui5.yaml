@@ -26,3 +26,19 @@ server:
       configuration:
         flp:
           theme: sap_fiori_3_dark
+resources:
+  configuration:
+    propertiesFileSourceEncoding: UTF-8
+builder:
+  resources:
+    excludes:
+      - "/test/**"
+      - "/localService/**"
+  customTasks:
+    - name: ui5-task-zipper
+      afterTask: generateVersionInfo
+      configuration:
+        archiveName: incident-overview
+        relativePaths: true
+        additionalFiles:
+          - xs-app.json

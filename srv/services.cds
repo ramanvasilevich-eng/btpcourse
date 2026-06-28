@@ -15,6 +15,8 @@ service ProcessorService {
 }
 
 annotate ProcessorService.Incidents with @odata.draft.enabled; 
+annotate ProcessorService with @(requires: 'support');
+
 
 /**
  * Service used by administrators to manage customers and incidents.
@@ -22,4 +24,22 @@ annotate ProcessorService.Incidents with @odata.draft.enabled;
 service AdminService {
     entity Customers as projection on my.Customers;
     entity Incidents as projection on my.Incidents;
+    entity Items     as projection on my.Items;
+
+    function getItemsByQuantity(quantity: Integer) returns array of Items;
+    action   createItem(title: String, descr: String, quantity: Integer) returns Items;
+
+    type NorthwindOrder {
+        OrderID      : Integer;
+        CustomerID   : String;
+        OrderDate    : String;
+        ShipName     : String;
+        ShipCity     : String;
+        ShipCountry  : String;
+    }
+    function getOrders() returns array of NorthwindOrder;
+    function getOrdersBTP() returns array of NorthwindOrder;
+
 }
+annotate AdminService with @(requires: 'admin');
+

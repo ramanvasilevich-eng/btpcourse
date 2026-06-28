@@ -1,5 +1,9 @@
 {
   "_version": "1.84.0",
+  "sap.cloud": {
+    "service": "incident-management",
+    "public": true
+  },
   "sap.app": {
     "id": "ns.incidents",
     "type": "application",
@@ -22,6 +26,19 @@
         "settings": {
           "annotations": [],
           "odataVersion": "4.01"
+        }
+      }
+    },
+    "crossNavigation": {
+      "inbounds": {
+        "incidents-inbound": {
+          "semanticObject": "Incidents",
+          "action": "display",
+          "title": "Incidents",
+          "signature": {
+            "parameters": {},
+            "additionalParameters": "allowed"
+          }
         }
       }
     }
@@ -147,12 +164,22 @@
     }
   },
   "sap.fiori": {
-    "registrationIds": [],
+    "registrationIds": [
+      "ns.incidents"
+    ],
     "archeType": "transactional"
   },
   "sap.fe": {
     "app": {
       "enableLazyLoading": true
+    }
+  },
+  "sap.platform.launchpad": {
+    "sap.inbound.intent": {
+      "incidents-inbound": {
+        "semanticObject": "Incidents",
+        "action": "display"
+      }
     }
   }
 }

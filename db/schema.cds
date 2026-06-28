@@ -81,6 +81,11 @@ entity Urgency : CodeList {
         low = 'L';
       };
 }
+entity Items : cuid {
+  title    : String;
+  descr    : String;
+  quantity : Integer;
+}
 
 type EMailAddress : String;
 type PhoneNumber  : String;

@@ -1,0 +1,32 @@
+[
+  {
+    "_version": "3.0",
+    "identification": {
+      "id": "defaultCatalogId",
+      "title": "{{title}}",
+      "entityType": "catalog"
+    },
+    "payload": {
+      "viz": [
+        { "appId": "ns.incidents", "vizId": "incidents-inbound" },
+        { "appId": "incidentoverview", "vizId": "incidentoverview-inbound" }
+      ]
+    },
+    "texts": [{ "locale": "", "textDictionary": { "title": "Incident Management" } }]
+  },
+  {
+    "_version": "3.0",
+    "identification": {
+      "id": "defaultGroupId",
+      "title": "{{title}}",
+      "entityType": "group"
+    },
+    "payload": {
+      "viz": [
+        { "appId": "ns.incidents", "vizId": "incidents-inbound" },
+        { "appId": "incidentoverview", "vizId": "incidentoverview-inbound" }
+      ]
+    },
+    "texts": [{ "locale": "", "textDictionary": { "title": "Incident Management" } }]
+  }
+]

@@ -1,7 +1,7 @@
 {
   "_version": "1.84.0",
   "sap.cloud": {
-    "service": "incident-management",
+    "service": "incidentmanagementservice",
     "public": true
   },
   "sap.app": {
@@ -60,7 +60,7 @@
     }
   },
   "sap.ui5": {
-    "flexEnabled": true,
+    "flexEnabled": false,
     "dependencies": {
       "minUI5Version": "1.147.2",
       "libs": {

@@ -1,19 +1,7 @@
 {
-  "xsappname": "xsuaa-jwt",
+  "xsappname": "incident-management",
   "tenant-mode": "dedicated",
   "scopes": [
-    {
-      "name": "$XSAPPNAME.Display",
-      "description": "View resources"
-    },
-    {
-      "name": "$XSAPPNAME.Edit",
-      "description": "Edit resources"
-    },
-    {
-      "name": "$XSAPPNAME.Delete",
-      "description": "Delete resources"
-    },
     {
       "name": "$XSAPPNAME.support",
       "description": "support"
@@ -41,7 +29,8 @@
   ],
   "oauth2-configuration": {
     "redirect-uris": [
-      "https://httpbin.org/get"
+      "https://*.hana.ondemand.com/**",
+      "https://*.launchpad.cfapps.us10.hana.ondemand.com/**"
     ]
   }
 }

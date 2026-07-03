@@ -16,18 +16,19 @@ modules:
     type: nodejs
     path: gen/srv
     parameters:
-      instances: 1
       buildpack: nodejs_buildpack
+      readiness-health-check-type: http
+      readiness-health-check-http-endpoint: /health
     build-parameters:
-      builder: npm-ci
+      builder: npm
     provides:
       - name: srv-api
         properties:
           srv-url: ${default-url}
     requires:
-      - name: incident-management-destination
       - name: incident-management-db
       - name: incident-management-auth
+      - name: incident-management-destination
 
   - name: incident-management-db-deployer
     type: hdb
@@ -63,6 +64,12 @@ modules:
   - name: incident-management-app-deployer
     type: com.sap.application.content
     path: gen
+    requires:
+      - name: incident-management-auth
+      - name: incident-management-destination
+      - name: incident-management-html5-repo-host
+        parameters:
+          content-target: true
     build-parameters:
       build-result: app/
       requires:
@@ -70,57 +77,18 @@ modules:
           artifacts:
             - cdm.json
           target-path: app/
-        - name: incidentmanagementincidentoverview
-          artifacts:
-            - incident-overview.zip
-          target-path: app/
         - name: incidentmanagementincidents
           artifacts:
             - incidents.zip
           target-path: app/
-    requires:
-      - name: incident-management-auth
-      - name: srv-api
-      - name: incident-management-html5-repo-host
-        parameters:
-          content-target: true
-          config:
-            HTML5Runtime_enabled: true
+        - name: incidentmanagementincidentoverview
+          artifacts:
+            - incident-overview.zip
+          target-path: app/
 
-  - name: incident-management-destination-content
-    type: com.sap.application.content
-    requires:
-      - name: incident-management-destination
-        parameters:
-          content-target: true
-      - name: incident-management-html5-repo-host
-        parameters:
-          service-key:
-            name: incident-management-html5-repo-host-key
-      - name: incident-management-auth
-        parameters:
-          service-key:
-            name: incident-management-auth-key
-    parameters:
-      content:
-        instance:
-          destinations:
-            - Name: incident-management-html5-repo-host
-              ServiceInstanceName: incident-management-html5-repo-host
-              ServiceKeyName: incident-management-html5-repo-host-key
-              sap.cloud.service: incident-management
-            - Authentication: OAuth2UserTokenExchange
-              Name: incident-management-auth
-              ServiceInstanceName: incident-management-auth
-              ServiceKeyName: incident-management-auth-key
-              sap.cloud.service: incident-management
-          existing_destinations_policy: ignore
-    build-parameters:
-      no-source: true
-
-  - name: incidentmanagementincidentoverview
+  - name: incidentmanagementincidents
     type: html5
-    path: app/incident-overview
+    path: app/incidents
     build-parameters:
       build-result: dist
       builder: custom
@@ -130,9 +98,9 @@ modules:
       supported-platforms:
         []
 
-  - name: incidentmanagementincidents
+  - name: incidentmanagementincidentoverview
     type: html5
-    path: app/incidents
+    path: app/incident-overview
     build-parameters:
       build-result: dist
       builder: custom
@@ -147,19 +115,53 @@ modules:
     path: workzone
     build-parameters:
       build-result: .
-      supported-platforms: []
+      supported-platforms:
+        []
+
+  - name: incident-management-destinations
+    type: com.sap.application.content
+    requires:
+      - name: incidents_html_repo_runtime
+        parameters:
+          service-key:
+            name: incidents-html5-app-runtime-service-key
+      - name: incident-management-auth
+        parameters:
+          service-key:
+            name: incident-management-auth-key
+      - name: incident-management-html5-repo-host
+        parameters:
+          service-key:
+            name: incident-management-html5-repo-host-key
+      - name: srv-api
+      - name: incident-management-destination
+        parameters:
+          content-target: true
+    build-parameters:
+      no-source: true
+    parameters:
+      content:
+        subaccount:
+          existing_destinations_policy: update
+          destinations:
+            - Name: incident-management-cdm
+              ServiceInstanceName: incidents-html5-app-runtime-service
+              ServiceKeyName: incidents-html5-app-runtime-service-key
+              URL: https://html5-apps-repo-rt.cfapps.us10.hana.ondemand.com/applications/cdm/incidentmanagementservice
 
 resources:
-  - name: incident-management-destination
-    type: org.cloudfoundry.managed-service
-    parameters:
-      service: destination
-      service-plan: lite
   - name: incident-management-db
     type: com.sap.xs.hdi-container
     parameters:
       service: hana
       service-plan: hdi-shared
+  - name: incident-management-html5-repo-host
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: html5-apps-repo
+      service-plan: app-host
+      config:
+        sizeLimit: 2
   - name: incident-management-auth
     type: org.cloudfoundry.managed-service
     parameters:
@@ -186,17 +188,30 @@ resources:
               - '$XSAPPNAME.admin'
     requires:
       - name: app-api
-
-  - name: incident-management-html5-repo-host
+  - name: incidents_html_repo_runtime
     type: org.cloudfoundry.managed-service
     parameters:
       service: html5-apps-repo
-      service-plan: app-host
-      config:
-        sizeLimit: 2
-
+      service-name: incidents-html5-app-runtime-service
+      service-plan: app-runtime
   - name: incident-management-html5-runtime
     type: org.cloudfoundry.managed-service
     parameters:
       service: html5-apps-repo
       service-plan: app-runtime
+  - name: incident-management-destination
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: destination
+      service-plan: lite
+      config:
+        init_data:
+          subaccount:
+            existing_destinations_policy: update
+            destinations:
+              - Authentication: NoAuthentication
+                Name: incident-management-rt
+                ProxyType: Internet
+                Type: HTTP
+                URL: https://bec2b464trial.launchpad.cfapps.us10.hana.ondemand.com
+                CEP.HTML5contentprovider: true
